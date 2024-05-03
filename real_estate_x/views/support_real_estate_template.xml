@@ -1,0 +1,180 @@
+<odoo>
+    <template id="support_feedback_template">
+        <t t-call="website.layout">
+            <div class="row m-3">
+                <div class="col-lg col-xl me-lg-auto">
+                    <span class="d-block fa fa-4x fa-thumbs-up mx-auto rounded-circle bg-primary"></span>
+                    <br/>
+                    <h1 class="text-center">Thank You!</h1>
+                    <div class="pb16 pt16 s_hr" data-snippet="s_hr"
+                         data-name="Separator">
+                        <hr
+                                class="mx-auto border-top w-50 border-dark text-center"/>
+                    </div>
+                    <h5 class="text-center">
+                        <span class="fa fa-check-circle"></span>
+                        <span>Your Complaint has been sent
+                            <b>successfully</b>
+                        </span>
+                    </h5>
+                    <p class="text-center">We will get back to you shortly.</p>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="support_real_estate_template">
+        <t t-call="website.layout">
+            <section
+                    class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24 mb-3"
+                    data-snippet="s_title"
+                    data-scroll-background-ratio="1">
+                <span class="s_parallax_bg oe_img_bg"
+                      style="background-image: url('/web/image/website.s_background_image_08'); background-position: 50% 0;"></span>
+                <div class="o_we_bg_filter bg-black-50"></div>
+                <div class="container">
+                    <h1>Compliant Form</h1>
+                </div>
+            </section>
+            <div class="container">
+                <form id="support_real_estate_form"
+                      action="/submit_support_form"
+                      method="post"
+                      class="o_mark_required" data-mark="*">
+                    <input type="hidden" name="csrf_token"
+                           t-att-value="request.csrf_token()" class="d-none"/>
+                    <div class="s_website_form_rows row s_col_no_bgcolor">
+                        <div
+                                class="s_website_form_field mb-3 col-12 s_website_form_custom s_website_form_required">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label"
+                                       style="width: 200px"
+                                       for="reporter_name">
+                                    <span class="s_website_form_label_content">
+                                        Name
+                                    </span>
+                                    <span class="s_website_form_mark">*
+                                    </span>
+                                </label>
+                                <div class="col-sm">
+                                    <input class="form-control s_website_form_input"
+                                           type="text" name="reporter_name"
+                                           required="1" placeholder=""
+                                           id="reporter_name"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                                class="s_website_form_field mb-3 col-12 s_website_form_required">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label"
+                                       style="width: 200px"
+                                       for="reporter_email">
+                                    <span class="s_website_form_label_content">
+                                        Email
+                                    </span>
+                                    <span class="s_website_form_mark">*
+                                    </span>
+                                </label>
+                                <div class="col-sm">
+                                    <input class="form-control s_website_form_input"
+                                           type="email" name="reporter_email"
+                                           required="1" placeholder=""
+                                           id="reporter_email"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label"
+                                       style="width: 200px" for="contact4">
+                                    <span class="s_website_form_label_content">
+                                        Phone
+                                    </span>
+                                </label>
+                                <div class="col-sm">
+                                    <input id="phone" type="phone"
+                                           class="form-control s_website_form_input"
+                                           name="reporter_phone"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label"
+                                       style="width: 200px" for="contact5">
+                                    <span class="s_website_form_label_content">
+                                        Address
+                                    </span>
+                                    <span class="s_website_form_mark">*
+                                    </span>
+                                </label>
+                                <div class="col-sm">
+                                    <textarea id="address"
+                                              class="form-control s_website_form_input"
+                                              name="reporter_address"
+                                              required=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-0 py-2 col-12">
+                            <h5 class="mt-3 mb-3 text-secondary">Complaint
+                                Information's
+                            </h5>
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label"
+                                       style="width: 200px" for="contact6">
+                                    <span class="s_website_form_label_content">
+                                        Problem Type
+                                    </span>
+                                    <span class="s_website_form_mark">*
+                                    </span>
+                                </label>
+                                <div class="col-sm">
+                                    <select name="problem_type_id"
+                                            class="form-control s_website_form_input">
+                                        <t t-foreach="problem_types"
+                                           t-as="type">
+                                            <option
+                                                    t-attf-value="#{type.get('id')}">
+                                                <t t-esc="type.get('name')"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required s_website_form_model_required">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label"
+                                       style="width: 200px">
+                                    <span class="s_website_form_label_content">
+                                        Description
+                                    </span>
+                                    <span class="s_website_form_mark">*
+                                    </span>
+                                </label>
+                                <div class="col-sm">
+                                    <textarea id="description"
+                                              class="form-control s_website_form_input"
+                                              name="description"
+                                              required=""/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-0 py-2 col-12 s_website_form_submit">
+                            <div style="width: 200px;"
+                                 class="s_website_form_label"></div>
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

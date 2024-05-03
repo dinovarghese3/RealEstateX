@@ -1,0 +1,242 @@
+<odoo>
+    <record id="real_estate_search_view" model="ir.ui.view">
+        <field name="name">real.estate.search</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="order_no"/>
+                <field name="reporter_name"/>
+                <field name="reporter_email"/>
+                <field name="service_rep_id"/>
+                <field name="problem_type_id"/>
+                <filter string="Archived" name="inactive"
+                        domain="[('active', '=', False)]"/>
+                <filter string="New" name="new"
+                        domain="[('state', '=', 'new')]"/>
+                <filter string="In Review" name="in_review"
+                        domain="[('state', '=', 'in_review')]"/>
+                <filter string="In Progress" name="in_progress"
+                        domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Solved" name="solved"
+                        domain="[('state', '=', 'solved')]"/>
+                <filter string="Dropped" name="dropped"
+                        domain="[('state', '=', 'dropped')]"/>
+
+                <filter string="Service Rep" name="group_by_service_rep_id"
+                        domain="[]"
+                        context="{'group_by':'service_rep_id'}"/>
+                <filter string="State" name="group_by_state"
+                        domain="[]"
+                        context="{'group_by':'state'}"/>
+            </search>
+        </field>
+    </record>
+
+
+    <record id="real_estate_drop_form_view" model="ir.ui.view">
+        <field name="name">Drop Reason</field>
+        <field name="model">real.estate</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <label for="drop_reason_id" string="Dropping Reason"/>
+                        <field name="drop_reason_id" nolabel="1"
+                               required="1"/>
+                    </group>
+                    <group>
+                        <label for="drop_reason" string="Reason"/>
+                        <field name="drop_reason" nolabel="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="drop_complaint" type="object"
+                            class="btn btn-primary"
+                            confirm="Are you sure want to Drop this Complaint?"
+                            string="Submit"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="real_estate_answer_form_view" model="ir.ui.view">
+        <field name="name">Question Answer</field>
+        <field name="model">real.estate</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <!--                    <group>-->
+                    <label for="answer_question" string="Answer"/>
+                    <field name="answer_question" nolabel="1" required="1"/>
+                    <!--                    </group>-->
+                </sheet>
+                <footer>
+                    <button name="send_answer_to_question" type="object"
+                            class="btn btn-primary"
+                            confirm="Do you want to proceed? The Answer will send to the Reporter as a Mail."
+                            string="Submit"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="real_estate_form_view" model="ir.ui.view">
+        <field name="name">Real Estate</field>
+        <field name="priority">1</field>
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="change_in_review" type="object"
+                            class="btn btn-primary"
+                            string="Move to in Review"
+                            invisible="state != 'new'"/>
+
+                    <button name="change_in_progress" type="object"
+                            class="btn btn-primary"
+                            string="Move to in Progress"
+                            invisible="state != 'in_review' or is_question_type"/>
+
+                    <button name="close_complaint" type="object"
+                            class="btn btn-primary"
+                            string="Close Complaint"
+                            invisible="state != 'in_progress'"/>
+
+                    <button name="close_complaint" type="object"
+                            class="btn btn-primary"
+                            string="Answer to Question and Close Complaint"
+                            invisible="state not in ('in_review','in_progress') or not is_question_type"/>
+
+                    <button name="drop_complaint_wizard"
+                            type="object"
+                            class="btn btn-secondary"
+                            string="Drop Complaint"
+                            invisible="state in ('solved','dropped')"/>
+
+                    <button name="print_workorder" type="object"
+                            class="btn btn-secondary"
+                            string="Print Work Order"
+                            invisible="state not in ('in_review','in_progress') or not require_intervention"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new, in_review, in_progress"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="order_no" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="is_question_type" invisible="1"/>
+                            <field name="reporter_name"/>
+                            <field name="reporter_phone"/>
+                        </group>
+                        <group>
+                            <field name="reporter_email"/>
+                            <field name="reporter_address"/>
+                        </group>
+                    </group>
+                    <group string="Complaint Information">
+                        <group>
+                            <field name="problem_type_id" required="1"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="service_rep_id"
+                                   widget="many2one_avatar_user"
+                                   options="{'no_create_edit': True, 'no_quick_create': True}"
+                                   required="state not in ('new','solved','dropped')"/>
+                            <field name="date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Replay to Question"
+                           invisible="is_question_type != True or state != 'solved'">
+                        <field name="answer_question" string="Answer"
+                               readonly="1"/>
+                    </group>
+                    <group string="Dropping Reason"
+                           invisible="state != 'dropped'">
+                        <group>
+                                <field name="drop_reason_id"
+                                       readonly="1" string="Dropping Reason"/>
+                                <field name="drop_reason"
+                                       readonly="1" string="Reason"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Action Plan"
+                              invisible="state == 'new' or  is_question_type">
+                            <group>
+                                <field name="require_intervention"
+                                       string="Required Intervention"/>
+                                <field name="action_plan"
+                                       required="state == 'in_review' and not is_question_type"/>
+                            </group>
+                        </page>
+                        <page name="notes" string="Notes">
+                            <group>
+                                <field name="internal_note"/>
+                                <field name="resolution_note"/>
+                            </group>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" colspan="4" widget="mail_thread"
+                           nolabel="1"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="real_estate_tree_view" model="ir.ui.view">
+        <field name="model">real.estate</field>
+        <field name="arch" type="xml">
+
+            <tree string="Real Estate">
+                <field name="order_no"/>
+                <field name="reporter_name"/>
+                <field name="reporter_email"/>
+                <field name="problem_type_id"/>
+                <field name="service_rep_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="real_estate_x_action" model="ir.actions.act_window">
+        <field name="name">Real Estate X</field>
+        <field name="res_model">real.estate</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Record
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Real Estate X"
+              sequence="1"
+              groups="base.group_user"
+              id="menu_real_estate_main"/>
+
+    <menuitem id="real_estate_action_menu"
+              action="real_estate_x_action"
+              parent="menu_real_estate_main"
+              sequence="10"/>
+
+    <menuitem id="configuration_real_state"
+              parent="menu_real_estate_main"
+              name="Configuration"
+              sequence="10"/>
+
+    <menuitem id="problem_type_action_menu"
+              action="problem_type_action"
+              parent="configuration_real_state"
+              sequence="10"/>
+
+</odoo>

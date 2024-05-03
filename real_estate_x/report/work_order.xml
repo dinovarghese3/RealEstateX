@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_work_order">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <center
+                                class="mt-3 mb-3 text-dark">
+                            <h4>
+                                <strong>Work Order</strong>
+                            </h4>
+                        </center>
+                        <div style="width:100%;">
+                            <div
+                                    class="d-flex flex-row flex-nowrap justify-content-between w-100" >
+                                <div class="left_side border p-2 w-50">
+                                    <table class="table table-borderless"
+                                           style="border: 1px solid white;">
+                                        <tr>
+                                            <td class="border border-0">
+                                                <strong class="text-dark">
+                                                    Order No :
+                                                </strong>
+                                            </td>
+                                            <td class="border border-0">
+                                                <t t-esc="o.order_no"/>
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td class="border border-0">
+                                                <strong class="text-dark">
+                                                    Date :
+                                                </strong>
+                                            </td>
+                                            <td class="border border-0">
+                                                <t t-esc="o.date"/>
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td class="border border-0">
+                                                <strong class="text-dark">
+                                                    Customer Rep :
+                                                </strong>
+                                            </td>
+                                            <td class="border border-0">
+                                                <t t-esc="o.service_rep_id.name"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="right_side border p-2 w-50">
+                                    <table class="table table-borderless"
+                                           style="border: 1px solid white;">
+                                        <tr>
+                                            <td class="border border-0">
+                                                <strong class="text-dark">
+                                                    Reporter Name :
+                                                </strong>
+                                            </td>
+                                            <td class="border border-0">
+                                                <t t-esc="o.reporter_name"/>
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td class="border border-0">
+                                                <strong class="text-dark">
+                                                    Reporter Email :
+                                                </strong>
+                                            </td>
+                                            <td class="border border-0">
+                                                <t t-esc="o.reporter_email"/>
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td class="border border-0">
+                                                <strong class="text-dark">
+                                                    Reporter Phone :
+                                                </strong>
+                                            </td>
+                                            <td class="border border-0">
+                                                <t t-esc="o.reporter_phone"/>
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td
+                                                    class="p-2 border border-0">
+                                                <strong class="text-dark">
+                                                    Reporter Address:
+                                                </strong>
+                                            </td>
+                                            <td class="border border-0"
+                                                style="min-width: 200px;max-width:200px;width:200px;">
+                                                <t t-esc="o.reporter_address"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <h5 class="text-dark mb-3">
+                                <strong>Complaint's Information</strong>
+                            </h5>
+                            <div class="border p-1">
+                                <div
+                                        class="row w-100 h-100 p-2  m-1  border-bottom">
+                                    <span>
+                                        <strong class="text-dark">Problem
+                                            Type :
+                                        </strong>
+                                    </span>
+                                    <span class="row m-1">
+                                        <t t-esc="o.problem_type_id.name"/>
+                                    </span>
+                                </div>
+                                <div class="w-100 h-100 p-2 m-1 border-bottom"
+                                     style="min-height: 200px">
+                                    <strong class="text-dark">Description
+                                        :
+                                    </strong>
+                                    <div class="row m-1">
+                                        <t t-esc="o.description"/>
+                                    </div>
+                                </div>
+                                <div class="w-100 h-100 p-2 m-1"
+                                     style="min-height: 200px">
+                                    <strong class="text-dark">Action Plan
+                                        :
+                                    </strong>
+                                    <div class="row m-1">
+                                        <t t-esc="o.action_plan"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

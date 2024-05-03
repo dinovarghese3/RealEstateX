@@ -1,0 +1,24 @@
+<odoo>
+    <data noupdate="1">
+        <record id="problem_type_question" model="problem.types">
+            <field name="name">Question</field>
+            <field name="is_question">True</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="problem_type_electric" model="problem.types">
+            <field name="name">Electric Issue</field>
+            <field name="is_question">False</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="problem_type_heating" model="problem.types">
+            <field name="name">Heating Issue</field>
+            <field name="is_question">False</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="problem_type_other" model="problem.types">
+            <field name="name">Other</field>
+            <field name="is_question">False</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <data noupdate="1">
+        <record id="drop_reason_duplication" model="drop.reasons">
+            <field name="name">Duplication</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="drop_reason_wrong" model="drop.reasons">
+            <field name="name">Wrong Information</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="drop_reason_other" model="drop.reasons">
+            <field name="name">Other</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>
