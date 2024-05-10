@@ -4,6 +4,7 @@ from odoo import Command, fields
 GROUP_USER = 'real_estate_x.group_real_estate_manager'
 GROUP_MANAGER = 'real_estate_x.group_real_estate_customer_rep'
 
+
 class TestRealEstate(SingleTransactionCase):
     @classmethod
     def setUpClass(cls):
@@ -13,7 +14,7 @@ class TestRealEstate(SingleTransactionCase):
         cls.normal_user = cls.env.ref(GROUP_USER)
         cls.manager_user = cls.env.ref(GROUP_MANAGER)
         cls.user_manager = cls.env['res.users'].create({
-            'name': 'Test Portal User',
+            'name': 'Test Service Rep User',
             'login': 'portal_user',
             'password': 'portal_user',
             'email': 'portal_user@gladys.portal',
@@ -23,23 +24,25 @@ class TestRealEstate(SingleTransactionCase):
         cls.question_problem = Model.create({
             'name': 'Test Problem Type',
             'is_question': True,
+            'user_id': cls.user_manager.id,
         })
         cls.non_question_problem = Model.create({
             'name': 'Test Problem Not Question',
             'is_question': False,
-        })
-        Model = cls.env['customer.service']
-        cls.customer_rep = Model.create({
             'user_id': cls.user_manager.id,
-            'sequence': 8,
-            'problem_types_ids': [(6, 0, [cls.question_problem.id,
-                                          cls.non_question_problem.id])]
         })
-        print("----completed service ----%s", cls.customer_rep)
+        # Model =
+        # cls.customer_rep = cls.env['customer.service'].create({
+        #     'user_id': cls.user_manager.id,
+        #     'sequence': 8,
+        #     'problem_types_ids': [(6, 0, [cls.question_problem.id,
+        #                                   cls.non_question_problem.id])]
+        # })
+        # print("----completed service ----%s", cls.customer_rep)
 
     def test_create_complaint(self):
         """Test function to create Compliant records."""
-        print("---- test_create_complaint ---")
+        print("---- Test Case Started ---")
         print("---- User Created ---%s", self.user_manager)
         # real_estate_form = Form(self.env['real.estate'])
         Model = self.env['real.estate']
@@ -55,6 +58,7 @@ class TestRealEstate(SingleTransactionCase):
         print("---- Test 4 Complaint Drop Test ----")
         self._test_4_drop_complaint(Model)
         print("---- Test 4 Completed ----")
+        print("---- Test Case Completed ---")
 
     def _test_4_drop_complaint(self, Model):
         self.real_estate_form = Model.create({
@@ -71,6 +75,8 @@ class TestRealEstate(SingleTransactionCase):
                          self.user_manager.id, " Service Rep Assigning Failed")
         self._test_move_to_in_review()
         self._test_drop_complaint()
+        # print("---------- _test_4_drop_complaint -------------")
+        # print(self.real_estate_form.read())
 
     def _test_3_non_question_complaint(self, Model):
         self.real_estate_form = Model.create({
@@ -97,6 +103,8 @@ class TestRealEstate(SingleTransactionCase):
         self.assertEqual(report_action['report_type'], 'qweb-pdf',
                          "Report Type Failed")
         self._test_close_complaint()
+        # print("--------- _test_3_non_question_complaint ----------")
+        # print(self.real_estate_form.read())
 
     def _test_compliant_question(self, Model):
         self.real_estate_form = Model.create({
@@ -116,6 +124,8 @@ class TestRealEstate(SingleTransactionCase):
         self.real_estate_form.send_answer_to_question()
         self.assertEqual(self.real_estate_form.state,
                          'solved', "Status Change Failed")
+        # print("------ _test_compliant_question -------------")
+        # print(self.real_estate_form.read())
         # TODO:- Need to check mail send or not.
 
     def _test_not_question_complaint(self, Model):
@@ -136,6 +146,8 @@ class TestRealEstate(SingleTransactionCase):
                                      'require_intervention': False})
         self._test_move_to_in_progress()
         self._test_close_complaint()
+        # print("---------------test_not_question_complaint --------------")
+        # print(self.real_estate_form.read())
 
     def _test_move_to_in_review(self):
         self.real_estate_form.change_in_review()
