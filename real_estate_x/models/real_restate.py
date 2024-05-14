@@ -42,6 +42,7 @@ class RealEstate(models.Model):
                               ('in_progress', 'In Progress'),
                               ('solved', 'Solved'), ('dropped', 'Dropped')],
                              default='new', string="State",
+                             group_expand='_expand_states',
                              track_visibility='onchange')
 
     service_rep_id = fields.Many2one('res.users', string="Customer Service "
@@ -73,6 +74,9 @@ class RealEstate(models.Model):
                                   help="Resolution Notes this will send with the"
                                        "compliant close mail",
                                   track_visibility='onchange')
+
+    def _expand_states(self, states, domain, order):
+        return ['new', 'in_review', 'in_progress', 'solved', 'dropped']
 
     @api.constrains('reporter_email')
     def send_register_mail(self):

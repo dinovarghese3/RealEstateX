@@ -130,7 +130,7 @@
                     </tr>
                 </table>
             </field>
-            <field name="auto_delete" eval="True"/>
+            <field name="auto_delete" eval="False"/>
         </record>
         <record id="assigned_real_Estate_template"
                 model="mail.template">
